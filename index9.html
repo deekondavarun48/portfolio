@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Varun Laxmi Narasimha Deekonda | Portfolio</title>
+  
+  <!-- Lenis Smooth Scroll CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      cursor: none !important;
+    }
+
+    body {
+      background-color: #08090c;
+      color: #ffffff;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Fixed Background 3D Canvas */
+    #webgl {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    /* Interactive Cursor */
+    .cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      background: #00f2fe;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate3d(-50%, -50%, 0);
+      box-shadow: 0 0 12px #00f2fe, 0 0 24px #00f2fe;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 34px;
+      height: 34px;
+      border: 1.5px solid rgba(0, 242, 254, 0.65);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate3d(-50%, -50%, 0);
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                  height 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                  background-color 0.25s ease,
+                  border-color 0.25s ease;
+    }
+
+    .cursor-hover .cursor-trail {
+      width: 58px;
+      height: 58px;
+      background-color: rgba(0, 242, 254, 0.12);
+      border-color: #4facfe;
+    }
+
+    /* Layout & Structure */
+    .content-wrapper {
+      position: relative;
+      z-index: 2;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 8%;
+    }
+
+    /* Badges & Meta Tags */
+    .status-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .badge-open {
+      background: rgba(56, 239, 125, 0.15);
+      border: 1px solid #38ef7d;
+      color: #38ef7d;
+    }
+
+    .badge-location {
+      background: rgba(0, 242, 254, 0.15);
+      border: 1px solid #00f2fe;
+      color: #00f2fe;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(0, 242, 254, 0.08);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 20px;
+      color: #00f2fe;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 100%;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4.2vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    .first-name {
+      display: block;
+      white-space: nowrap;
+      background: linear-gradient(135deg, #ffffff 40%, #e2e8f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .surname {
+      display: block;
+      white-space: nowrap;
+      background: linear-gradient(135deg, #4facfe 20%, #00f2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 4px;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: #38ef7d;
+      font-weight: 500;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-subtitle span {
+      color: #64748b;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      line-height: 1.7;
+      max-width: 650px;
+    }
+
+    /* About Section */
+    .about-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 44px;
+      border-radius: 24px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 40px;
+      align-items: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .photo-frame {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid rgba(0, 242, 254, 0.4);
+      box-shadow: 0 8px 30px rgba(0, 242, 254, 0.2);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .photo-frame:hover img {
+      transform: scale(1.06);
+    }
+
+    .about-text h2 {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    .about-text p {
+      color: #cbd5e1;
+      font-size: 1.02rem;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .about-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .about-points li {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      position: relative;
+      padding-left: 22px;
+    }
+
+    .about-points li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: #00f2fe;
+      font-size: 1.1rem;
+    }
+
+    .about-points strong {
+      color: #ffffff;
+    }
+
+    /* Skills Grid */
+    .skills-section-header {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      color: #66fcf1;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-cat {
+      background: rgba(30, 41, 59, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 22px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .skill-cat h4 {
+      color: #00f2fe;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .pill:hover {
+      border-color: #00f2fe;
+      color: #00f2fe;
+      background: rgba(0, 242, 254, 0.1);
+    }
+
+    /* Contact Section */
+    .contact h2 {
+      font-size: 2.6rem;
+      text-align: center;
+      background: linear-gradient(135deg, #ffffff, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .contact-subtitle {
+      text-align: center;
+      color: #94a3b8;
+      margin-bottom: 40px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .contact-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 32px 24px;
+      text-decoration: none;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.3s ease, 
+                  box-shadow 0.3s ease;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0, 242, 254, 0.4);
+      box-shadow: 0 16px 36px rgba(0, 242, 254, 0.15);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      color: #00f2fe;
+      margin-bottom: 16px;
+    }
+
+    .contact-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+    }
+
+    .contact-card p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .card-link-text {
+      color: #00f2fe;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #64748b;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    @media (max-width: 900px) {
+      .about-card {
+        grid-template-columns: 1fr;
+        padding: 30px;
+      }
+      .photo-frame {
+        max-width: 180px;
+        margin: 0 auto;
+      }
+      section {
+        padding: 60px 6%;
+      }
+      .first-name, .surname {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Interactive Magnetic Cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- 3D Canvas Background -->
+  <canvas id="webgl"></canvas>
+
+  <div class="content-wrapper">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="status-bar">
+        <div class="meta-badge badge-open"><i class="fa-solid fa-circle-check"></i> Status: Open to Work</div>
+        <div class="meta-badge badge-location"><i class="fa-solid fa-location-dot"></i> Location: India</div>
+      </div>
+      
+      <!-- First Name top, Surname bottom -->
+      <h1>
+        <span class="first-name">Varun Laxmi Narasimha</span>
+        <span class="surname">Deekonda</span>
+      </h1>
+
+      <div class="hero-subtitle">
+        Computer Science Graduate <span>|</span> Python & ML Developer <span>|</span> Entry-Level Software Engineer
+      </div>
+      <p>
+        Aspiring Software Engineer and Computer Science graduate with foundational knowledge in Python, data analysis, core machine learning, and modern AI workflows.
+      </p>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+      <div class="about-card interactive-target">
+        <div class="photo-frame">
+          <img 
+            src="https://github.com/deekondavarun48.png" 
+            alt="Varun Laxmi Narasimha Deekonda"
+            onerror="this.src='https://images.unsplash.com/photo-1534972195531-a756b1126f24?w=500&auto=format&fit=crop&q=80'"
+          />
+        </div>
+        <div class="about-text">
+          <div class="tag"><i class="fa-solid fa-user"></i> About Me</div>
+          <h2>Computer Science Graduate & AI Enthusiast</h2>
+          <p>
+            I am a Computer Science graduate passionate about technology, data analysis, and modern software development. I combine a solid understanding of computer science fundamentals with modern AI-assisted tools to build functional prototypes and data-driven solutions efficiently.
+          </p>
+          <ul class="about-points">
+            <li><strong>Background:</strong> Computer Science graduate with foundational knowledge in algorithms, logic, and software concepts.</li>
+            <li><strong>AI & Prompt Workflows:</strong> Practical experience using structured prompting, generative AI tools, and LLM workflows to streamline problem-solving.</li>
+            <li><strong>Data & ML:</strong> Exploring Python, data analysis (EDA), and machine learning concepts using libraries like Pandas and Scikit-Learn.</li>
+            <li><strong>Mindset:</strong> Adaptable, quick learner, and enthusiastic about leveraging modern developer tools to build and test ideas.</li>
+            <li><strong>Objective:</strong> Seeking entry-level roles (Software / Data / Associate roles) where I can contribute, learn from experienced teams, and strengthen my technical skills.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Skills & Tools -->
+      <h3 class="skills-section-header"><i class="fa-solid fa-microchip"></i> Skills & Familiar Tools</h3>
+      <div class="skills-grid">
+        <!-- Programming Languages -->
+        <div class="skill-cat interactive-target">
+          <h4><i class="fa-solid fa-code"></i> Programming Languages</h4>
+          <div class="pills">
+            <span class="pill"><i class="fa-brands fa-python"></i> Python (Core)</span>
+            <span class="pill"><i class="fa-solid fa-terminal"></i> C++ (Basics)</span>
+            <span class="pill"><i class="fa-solid fa-code"></i> C</span>
+            <span class="pill"><i class="fa-solid fa-database"></i> SQL (Queries)</span>
+          </div>
+        </div>
+
+        <!-- Data Science & Machine Learning -->
+        <div class="skill-cat interactive-target">
+          <h4><i class="fa-solid fa-chart-line"></i> Data Science & ML Basics</h4>
+          <div class="pills">
+            <span class="pill">Scikit-Learn</span>
+            <span class="pill">Pandas</span>
+            <span class="pill">NumPy</span>
+            <span class="pill">EDA</span>
+            <span class="pill">Generative AI Basics</span>
+          </div>
+        </div>
+
+        <!-- Developer Tools & Environment -->
+        <div class="skill-cat interactive-target">
+          <h4><i class="fa-solid fa-toolbox"></i> Tools & Environment</h4>
+          <div class="pills">
+            <span class="pill"><i class="fa-brands fa-git-alt"></i> Git</span>
+            <span class="pill"><i class="fa-brands fa-github"></i> GitHub</span>
+            <span class="pill"><i class="fa-solid fa-laptop-code"></i> VS Code</span>
+            <span class="pill">Jupyter Notebooks</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+      <div class="tag" style="margin: 0 auto 16px auto;"><i class="fa-solid fa-paper-plane"></i> Contact Me</div>
+      <h2>Let's Connect</h2>
+      <p class="contact-subtitle">Feel free to reach out for opportunities, discussions, or connections.</p>
+
+      <div class="contact-grid">
+        <!-- GitHub Card -->
+        <a href="https://github.com/deekondavarun48" target="_blank" rel="noopener noreferrer" class="contact-card interactive-target">
+          <i class="fa-brands fa-github card-icon"></i>
+          <h3>GitHub</h3>
+          <p>Check out my code repositories, Python practice scripts, and learning projects.</p>
+          <span class="card-link-text">github.com/deekondavarun48 <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </a>
+
+        <!-- LinkedIn Card -->
+        <a href="https://www.linkedin.com/in/varun-laxmi-narasimha-deekonda-1b6537278" target="_blank" rel="noopener noreferrer" class="contact-card interactive-target">
+          <i class="fa-brands fa-linkedin card-icon"></i>
+          <h3>LinkedIn</h3>
+          <p>Connect with me professionally and view my latest profile updates.</p>
+          <span class="card-link-text">Varun Laxmi Narasimha Deekonda <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </a>
+
+        <!-- Email Card -->
+        <a href="mailto:deekondavarun48@gmail.com" class="contact-card interactive-target">
+          <i class="fa-solid fa-envelope card-icon"></i>
+          <h3>Email</h3>
+          <p>Send me a direct message regarding entry-level opportunities or questions.</p>
+          <span class="card-link-text">deekondavarun48@gmail.com <i class="fa-solid fa-paper-plane"></i></span>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2026 Varun Laxmi Narasimha Deekonda &bull; Built with Three.js & Lenis.
+    </footer>
+  </div>
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+  <script>
+    /* ==========================================================
+       1. 120FPS+ SCROLL ENGINE (Lenis)
+       ========================================================== */
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.5
+    });
+
+    let currentScroll = 0;
+    lenis.on('scroll', (e) => {
+      currentScroll = e.scroll;
+    });
+
+    /* ==========================================================
+       2. HIGH-PERFORMANCE MAGNETIC CURSOR
+       ========================================================== */
+    const dot = document.getElementById('cursorDot');
+    const trail = document.getElementById('cursorTrail');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let trailX = mouseX;
+    let trailY = mouseY;
+
+    window.addEventListener('pointermove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+    }, { passive: true });
+
+    // Interactive Hover Triggers
+    const interactiveElements = document.querySelectorAll('.interactive-target, a, .pill');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    /* ==========================================================
+       3. THREE.JS 3D SCENE SETUP
+       ========================================================== */
+    const canvas = document.getElementById('webgl');
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 6.5;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // 3D Geometry Group
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // Position 3D object more to the right so it never overlaps the name
+    group.position.x = 2.0;
+
+    // Outer Geometric Icosahedron
+    const geomOuter = new THREE.IcosahedronGeometry(1.5, 2);
+    const matOuter = new THREE.MeshStandardMaterial({
+      color: 0x00f2fe,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.45,
+      roughness: 0.1,
+      metalness: 0.9
+    });
+    const meshOuter = new THREE.Mesh(geomOuter, matOuter);
+    group.add(meshOuter);
+
+    // Inner Glossy Torus
+    const geomInner = new THREE.TorusGeometry(0.8, 0.22, 32, 100);
+    const matInner = new THREE.MeshStandardMaterial({
+      color: 0x4facfe,
+      roughness: 0.15,
+      metalness: 0.95
+    });
+    const meshInner = new THREE.Mesh(geomInner, matInner);
+    group.add(meshInner);
+
+    // Particles
+    const particleCount = 500;
+    const posArray = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 22;
+    }
+    const particleGeometry = new THREE.BufferGeometry();
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particleMaterial = new THREE.PointsMaterial({
+      size: 0.035,
+      color: 0x00f2fe,
+      transparent: true,
+      opacity: 0.5
+    });
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particles);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.PointLight(0x00f2fe, 3, 50);
+    keyLight.position.set(5, 5, 5);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.PointLight(0x7928ca, 3, 50);
+    fillLight.position.set(-6, -4, 2);
+    scene.add(fillLight);
+
+    /* ==========================================================
+       4. ANIMATION LOOP (Delta-Time Lerping)
+       ========================================================== */
+    let lastTime = performance.now();
+
+    function animate(time) {
+      const delta = Math.min((time - lastTime) / 1000, 0.1);
+      lastTime = time;
+
+      // Update Lenis
+      lenis.raf(time);
+
+      // Smooth Cursor Trail
+      const cursorLerpFactor = 1.0 - Math.exp(-20 * delta);
+      trailX += (mouseX - trailX) * cursorLerpFactor;
+      trailY += (mouseY - trailY) * cursorLerpFactor;
+      trail.style.transform = `translate3d(${trailX}px, ${trailY}px, 0) translate(-50%, -50%)`;
+
+      // Scroll Progress Calculation
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollFraction = maxScroll > 0 ? currentScroll / maxScroll : 0;
+
+      // 3D Object Motion tied to scroll
+      group.rotation.x = scrollFraction * Math.PI * 1.5;
+      group.rotation.y += 0.35 * delta;
+      meshInner.rotation.x += 0.8 * delta;
+      meshInner.rotation.y += 0.5 * delta;
+
+      // Smooth position path
+      const targetGroupX = 2.0 + Math.sin(scrollFraction * Math.PI * 2) * 1.1;
+      const targetGroupY = -Math.cos(scrollFraction * Math.PI * 2) * 0.4;
+      group.position.x += (targetGroupX - group.position.x) * (1.0 - Math.exp(-8 * delta));
+      group.position.y += (targetGroupY - group.position.y) * (1.0 - Math.exp(-8 * delta));
+
+      // Mouse Parallax on Camera
+      const targetCamX = ((mouseX / window.innerWidth) - 0.5) * 1.0;
+      const targetCamY = -((mouseY / window.innerHeight) - 0.5) * 1.0;
+      camera.position.x += (targetCamX - camera.position.x) * (1.0 - Math.exp(-5 * delta));
+      camera.position.y += (targetCamY - camera.position.y) * (1.0 - Math.exp(-5 * delta));
+      camera.lookAt(0, 0, 0);
+
+      particles.rotation.y += 0.05 * delta;
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    /* ==========================================================
+       5. RESIZE HANDLER
+       ========================================================== */
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    });
+  </script>
+</body>
+</html>
