@@ -1,6 +1,6 @@
 # 🌐 Personal Portfolio Website
 
-A modern, responsive personal portfolio website showcasing software development skills, technical background, and contact links[cite: 1, 2]. Built with vanilla web technologies, Three.js 3D graphics, and smooth scrolling animations[cite: 1, 2].
+A modern, high-performance personal portfolio website showcasing software development skills, technical background, featured engineering projects, and contact channels. Built with vanilla web technologies, Three.js 3D animations, Lenis smooth inertia scrolling, and an interactive magnetic cursor.
 
 🔗 **Live Website:** [https://deekondavarun48.github.io/portfolio/](https://deekondavarun48.github.io/portfolio/)
 
@@ -8,32 +8,36 @@ A modern, responsive personal portfolio website showcasing software development 
 
 ## ✨ Features
 
-* **3D Background Visuals:** Interactive Three.js canvas featuring floating geometric meshes (wireframe icosahedron and torus) with real-time lighting and particle effects[cite: 1, 2].
-* **Smooth Inertia Scrolling:** Integrated Lenis smooth-scroll engine tied directly to 3D object rotation and movement[cite: 1, 2].
-* **Interactive Cursor:** Custom dual-element cursor with dynamic trail smoothing and hover-expansion triggers[cite: 1, 2].
-* **Modern Dark UI:** Glassmorphic design styling with responsive layouts for mobile, tablet, and desktop viewports[cite: 1, 2].
-* **Sections Included:**
-  * **Hero:** Role badges, introduction, and title cards[cite: 1, 2].
-  * **About:** Background, generative AI workflows, and machine learning focus[cite: 1, 2].
-  * **Skills:** Core programming languages, data science basics, and developer tooling[cite: 1, 2].
-  * **Connect:** Direct links to GitHub, LinkedIn, and email[cite: 1, 2].
+* **3D Background Visuals:** Interactive Three.js WebGL canvas featuring floating geometric meshes (wireframe icosahedron and inner torus) with multi-point lighting and dynamic ambient particle effects.
+* **Smooth Inertia Scrolling:** Integrated Lenis smooth-scroll engine linked directly to 3D object rotation, camera parallax, and translation paths.
+* **Interactive Magnetic Cursor:** Custom dual-element cursor (center dot + trailing outline) with delta-time inertia smoothing and hover expansion on interactive elements.
+* **Featured Projects Showcase:** Dedicated glassmorphic project cards highlighting full-stack, computer vision, and machine learning systems:
+  * **Fraud Detection in Banking System:** Live deployment demo link and GitHub repository.
+  * **Criminal Identification & Tracking System:** Deep learning computer vision repository with Django backend.
+* **Modern Dark UI:** Glassmorphism design with high-contrast typography, categorized tech pills, and fully responsive layouts across mobile, tablet, and desktop viewports.
+* **Structured Sections:**
+  * **Hero:** Status badges, title cards, and role introduction.
+  * **About:** Academic background, software engineering focus, and modern development workflows.
+  * **Skills:** Categorized pills for programming languages, data science & ML basics, and developer tooling.
+  * **Projects:** Interactive showcase of full-stack, ML, and computer vision systems.
+  * **Connect:** Direct contact integration for GitHub, LinkedIn, and Email.
 
 ---
 
 ## 🛠️ Tech Stack & Libraries
 
-* **Core:** HTML5, CSS3, JavaScript (ES6+)[cite: 1, 2]
-* **3D Graphics:** [Three.js](https://threejs.org/) (r128 via CDN)[cite: 1, 2]
-* **Scroll Engine:** [Lenis](https://github.com/darkroomengineering/lenis) (v1.1.9 via CDN)[cite: 2]
-* **Icons:** [Font Awesome 6](https://fontawesome.com/) (via CDN)[cite: 2]
-* **Hosting:** GitHub Pages
+* **Core:** HTML5, CSS3, JavaScript (ES6+)
+* **3D Graphics & WebGL:** [Three.js](https://threejs.org/) (r128 via CDN)
+* **Smooth Scrolling:** [Lenis](https://github.com/darkroomengineering/lenis) (v1.1.9 via CDN)
+* **Icons & Typography:** [Font Awesome 6](https://fontawesome.com/) (CDN) & Google Fonts
+* **Hosting & CI/CD:** GitHub Pages
 
 ---
 
-## 🚀 Local Development
+## 📂 Project Structure
 
-To run or modify this project locally:
-
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/deekondavarun48/portfolio.git](https://github.com/deekondavarun48/portfolio.git)
+```text
+portfolio/
+│
+├── index.html        # Main HTML structure, 3D WebGL scenes, animations, and styles
+└── README.md         # Project documentation and details
